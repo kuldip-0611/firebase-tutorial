@@ -2,19 +2,34 @@
 import './App.css';
 // import { useFirebase } from './context/Firebase';
 // import { useState } from 'react';
-import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
+import { getAuth, createUserWithEmailAndPassword ,onAuthStateChanged} from 'firebase/auth';
 import { app } from './firebase';
 import Signup from './pages/Signup';
 import Signin from './pages/Signin';
+import { useEffect,useState } from 'react';
 
 const auth = getAuth(app);
 
 
 
+
+
 function App() {
+  const [user,setUser] = useState(null);
   // const [email, setEmail] = useState('');
   // const [password, setPassword] = useState('');
   // const firebase = useFirebase()
+  useEffect(()=>{
+    onAuthStateChanged(auth,(user)=>{
+      if(user){
+        setUser(user)
+
+      }
+      else{
+        setUser(null)
+      }
+    })
+  })
 
   
   
@@ -27,7 +42,12 @@ function App() {
       .then(value => console.log(value));
   }
 
-
+  if(user === null){
+   <>
+     <Signup />
+     <Signin />
+   </>
+  }
 
   return (
     <>
@@ -38,8 +58,9 @@ function App() {
       <div className="btn">
         <button onClick={signup} >Put Data</button>
       </div>
-      <Signup />
-      <Signin />
+
+      <h1>{user.email}</h1>
+    
 
     </div>
     
