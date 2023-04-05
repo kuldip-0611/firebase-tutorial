@@ -1,6 +1,6 @@
 
 import './App.css';
-import {getFirestore,collection,addDoc} from 'firebase/firestore'
+import {getFirestore,collection,addDoc,doc,getDoc,query,where, getDocs,updateDoc} from 'firebase/firestore'
 // import { useFirebase } from './context/Firebase';
 // import { useState } from 'react';
 // import { getAuth, createUserWithEmailAndPassword ,onAuthStateChanged,signOut} from 'firebase/auth';
@@ -26,9 +26,31 @@ const addAnotherData = async ()=>{
   const result = await addDoc(collection(fireStore,'cities/BdGS66ACAC0KsOc2VDiD/food'),{
     food:'gathiya'
   })
+  console.log(result)
 }
+const getDocument = async ()=>{
+  const ref =  doc(fireStore,"cities","BdGS66ACAC0KsOc2VDiD")
+  const snap = await getDoc(ref)
 
+  console.log(snap.data())
+}
+const getDocumentOnQuery = async ()=>{
+  const ref =   collection(fireStore,"cities")
 
+  const queryy = query(ref,where('state' , '==' ,'gujarat') )
+
+  const result = await getDocs(queryy)
+
+  result.forEach(data => console.log(data.data()))
+}
+const update = async ()=>{
+  const ref = doc(fireStore,"cities","BdGS66ACAC0KsOc2VDiD")
+  updateDoc(ref,{
+    name:'bhavnagarrr'
+  })
+
+  
+}
 function App() {
   // const [user,setUser] = useState(null);
 
@@ -69,6 +91,9 @@ function App() {
     <>
       <button onClick={writeData}>Add Data To fireStore</button>
       <button onClick={addAnotherData} > add another collection </button> 
+      <button onClick={getDocument}>Get Document</button>
+      <button onClick={getDocumentOnQuery}>Get Perticular Query</button>
+      <button onClick={update}>Update Doc</button>
     {/* {user ? <h1> {user.email}  <button onClick={()=>signOut(auth)}>Logout</button> </h1> : <Signin />}
     <div className="App">
       <div>
