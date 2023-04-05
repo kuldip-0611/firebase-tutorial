@@ -2,7 +2,7 @@
 import './App.css';
 // import { useFirebase } from './context/Firebase';
 // import { useState } from 'react';
-import { getAuth, createUserWithEmailAndPassword ,onAuthStateChanged} from 'firebase/auth';
+import { getAuth, createUserWithEmailAndPassword ,onAuthStateChanged,signOut} from 'firebase/auth';
 import { app } from './firebase';
 import Signup from './pages/Signup';
 import Signin from './pages/Signin';
@@ -42,15 +42,16 @@ function App() {
       .then(value => console.log(value));
   }
 
-  if(user === null){
-   <>
-     <Signup />
-     <Signin />
-   </>
-  }
+  // if(user === null){
+  //  <>
+  //    <Signup />
+  //    <Signin />
+  //  </>
+  // }
 
   return (
     <>
+    {user ? <h1> {user.email}  <button onClick={()=>signOut(auth)}>Logout</button> </h1> : <Signin />}
     <div className="App">
       <div>
         Fire Base Basics
@@ -59,7 +60,8 @@ function App() {
         <button onClick={signup} >Put Data</button>
       </div>
 
-      <h1>{user.email}</h1>
+      {/* <h1>{user.email}</h1> */}
+      
     
 
     </div>
