@@ -1,7 +1,7 @@
 import { createContext, useContext } from "react";
 import {initializeApp} from 'firebase/app'
 import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
-import {getDatabase, ref, set} from 'firebase/database'
+import {child, get, getDatabase, ref, set} from 'firebase/database'
 const FirebaseContext = createContext(null);
 
 const firebaseConfig = {
@@ -24,6 +24,7 @@ export const FirebaseProvider = (props) => {
 
     }
     const putData = (key,data)=> set(ref(database,key),data)
+    get(child(ref(database),'grandfather')).then(data=>console.log(data.val()))
 
 
     
